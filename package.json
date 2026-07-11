@@ -1,0 +1,24 @@
+{
+  "name": "msw-express-skeleton",
+  "version": "1.0.0",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "build:mocks": "esbuild src/mocks/browser.js --bundle --format=esm --platform=browser --outfile=public/mocks/browser.js",
+    "start": "npm run build:mocks && node server.js",
+    "dev": "npm run build:mocks && node --watch server.js",
+    "msw:init": "msw init public --save"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.1",
+    "msw": "^2.7.0"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
+  }
+}

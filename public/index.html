@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>MSW + Express Skeleton</title>
+</head>
+<body>
+  <h1>MSW + Express Skeleton</h1>
+  <div id="app">Loading...</div>
+
+  <!--
+    MSW (Mock Service Worker) を最初にロード & 起動する。
+    ブラウザは "msw/browser" のような bare specifier を解決できないため、
+    src/mocks/browser.js は esbuild で public/mocks/browser.js に事前バンドル
+    してある (npm run build:mocks)。
+    起動完了後、public/contents.html を取得してドキュメント全体を
+    上書きする。contents.html 内では /src/mock/inner.js を読み込み、
+    DOMContentLoaded のタイミングでデバッグログを出力する。
+  -->
+  <script type="module">
+    import { worker } from '/mocks/browser.js';
+
+    worker
+      .start({
+        onUnhandledRequest: 'bypass',
+      })
+      .then(() => fetch('/contents.html'))
+      .then((res) => res.text())
+      .then((html) => {
+        document.open();
+        document.write(html);
+        document.close();
+      });
+  </script>
+</body>
+</html>
